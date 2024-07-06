@@ -23,12 +23,12 @@ public class Principal {
     private final BookRepository bookRepository;
     private final String URL_ROOT = "https://gutendex.com/books/?search=";
 
-    public Principal(AuthorRepository autorRepository, BookRepository bookRepository){
+    public Principal(AuthorRepository autorRepository, BookRepository bookRepository) {
         this.authorRepository = autorRepository;
         this.bookRepository = bookRepository;
     }
 
-    public void muestraMenu(){
+    public void muestraMenu() {
         String menu = """
                 --------------------------------------------
                 Elija la opción a través de un número:
@@ -42,12 +42,12 @@ public class Principal {
                 --------------------------------------------
                 """;
 
-        while (iniciar){
-            try{
+        while (iniciar) {
+            try {
                 System.out.println(menu);
                 opcion = teclado.nextInt();
                 teclado.nextLine();
-                switch (opcion){
+                switch (opcion) {
                     case 1:
                         agregarLibro();
                         break;
@@ -71,25 +71,28 @@ public class Principal {
                         System.out.println("Saliendo de la aplicación...");
                         break;
                     default:
-                        System.out.println("Opcion inválida."); 
+                        System.out.println("Opcion inválida.");
                 }
-            }catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 teclado.nextLine();
-                System.out.println("Ingrese una opcion de numero valida "+ e.getMessage());
+                System.out.println("Ingrese una opcion de numero valida " + e.getMessage());
             }
         }
     }
-    private DataResult busquedaLibro(){
+
+    private DataResult busquedaLibro() {
         System.out.println("Ingresa el libro de que deseas buscar");
         String nombreLibro = teclado.nextLine();
         String json = consumoApi.obtenerDatos(URL_ROOT + nombreLibro.replace(" ", "+"));
-        return conversor.obtenerDatos(json, DataResult.class);
+        var resultado = conversor.obtenerDatos(json, DataResult.class);
+        return resultado;
     }
 
     private void agregarLibro() {
-        var nuevabusqueda = busquedaLibro();
-        if (!nuevabusqueda.dataBooks().isEmpty()){
-            DataBook dataBook = busquedaLibro().dataBooks().get(0);
+        DataResult nuevabusqueda = busquedaLibro();
+
+        if (nuevabusqueda.dataBooks().size() > 0) {
+            DataBook dataBook = nuevabusqueda.dataBooks().get(0);
             DataAuthor datosAuthor = dataBook.dataAuthors().get(0);
             var tituloDeLibro = bookRepository.findBookByTitulo(dataBook.titulo());
             if (tituloDeLibro != null) {
@@ -135,10 +138,12 @@ public class Principal {
         System.out.println("Ingrese el año vivo de autor(es) que desea buscar.");
         var fechaAuthor = teclado.nextInt();
         teclado.nextLine();
-        if ( fechaAuthor < 0) {
+        if (fechaAuthor < 0) {
             System.out.println("Has ingresado un año negativo, intenta de nuevo.");
         } else {
-            List<Author> fechaAuthors = authorRepository.findAuthorByFechaNacimientoLessThanEqualAndFechaFallecimientoGreaterThanEqual(fechaAuthor, fechaAuthor);
+            List<Author> fechaAuthors = authorRepository
+                    .findAuthorByFechaNacimientoLessThanEqualAndFechaFallecimientoGreaterThanEqual(fechaAuthor,
+                            fechaAuthor);
             if (fechaAuthors.isEmpty()) {
                 System.out.println("No hay autores registrados en ese año.");
             } else {
@@ -160,12 +165,13 @@ public class Principal {
         if (!language.equals("es") && !language.equals("en") && !language.equals("fr") && !language.equals("pt")) {
             System.out.println("Has ingresado un idioma incorrecto, intentalo de nuevo.");
         } else {
-            List<Book> booksXLanguage = bookRepository.findBookByLanguajeContaining(language);
+            List<Book> booksXLanguage = bookRepository.findBookByLanguageContaining(language);
             if (booksXLanguage.isEmpty()) {
                 System.out.println("No hay libros registrados en ese idioma.");
             } else {
                 int cantidadLibros = booksXLanguage.size();
-                System.out.println("Total libros registrados en %s: ".formatted(Language.fromString(language)) + cantidadLibros);
+                System.out.println(
+                        "Total libros registrados en %s: ".formatted(Language.fromString(language)) + cantidadLibros);
                 booksXLanguage.forEach(System.out::println);
             }
         }

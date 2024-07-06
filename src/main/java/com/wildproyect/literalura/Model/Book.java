@@ -3,7 +3,7 @@ package com.wildproyect.literalura.Model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Books")
+@Table(name = "books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,7 +12,7 @@ public class Book {
     private String titulo;
     private String nombreAuthor;
     private String language;
-    private int cantidadDescargas;
+    private Integer cantidadDescargas;
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
@@ -84,7 +84,7 @@ public class Book {
                 Titulo: %s
                 Autor: %s
                 Idioma: %s
-                Número de descargas: %.2f
+                Número de descargas: %d
                 //////////////////////////////////////////////
                 """.formatted(titulo, nombreAuthor, language, cantidadDescargas);
     }
