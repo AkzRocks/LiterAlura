@@ -23,12 +23,12 @@ public class Principal {
     private final BookRepository bookRepository;
     private final String URL_ROOT = "https://gutendex.com/books/?search=";
 
-    public Principal(AuthorRepository autorRepository, BookRepository bookRepository) {
+    public Principal(AuthorRepository autorRepository, BookRepository bookRepository){
         this.authorRepository = autorRepository;
         this.bookRepository = bookRepository;
     }
 
-    public void muestraMenu() {
+    public void muestraMenu(){
         String menu = """
                 --------------------------------------------
                 Elija la opción a través de un número:
@@ -42,12 +42,12 @@ public class Principal {
                 --------------------------------------------
                 """;
 
-        while (iniciar) {
-            try {
+        while (iniciar){
+            try{
                 System.out.println(menu);
                 opcion = teclado.nextInt();
                 teclado.nextLine();
-                switch (opcion) {
+                switch (opcion){
                     case 1:
                         agregarLibro();
                         break;
@@ -71,16 +71,15 @@ public class Principal {
                         System.out.println("Saliendo de la aplicación...");
                         break;
                     default:
-                        System.out.println("Opcion inválida.");
+                        System.out.println("Opcion inválida."); 
                 }
-            } catch (InputMismatchException e) {
+            }catch (InputMismatchException e){
                 teclado.nextLine();
-                System.out.println("Ingrese una opcion de numero valida " + e.getMessage());
+                System.out.println("Ingrese una opcion de numero valida "+ e.getMessage());
             }
         }
     }
-
-    private DataResult busquedaLibro() {
+    private DataResult busquedaLibro(){
         System.out.println("Ingresa el libro de que deseas buscar");
         String nombreLibro = teclado.nextLine();
         String json = consumoApi.obtenerDatos(URL_ROOT + nombreLibro.replace(" ", "+"));
