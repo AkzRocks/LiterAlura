@@ -84,7 +84,7 @@ public class Book {
                 Titulo: %s
                 Autor: %s
                 Idioma: %s
-                Número de descargas: %.2f
+                Número de descargas: %d
                 //////////////////////////////////////////////
                 """.formatted(titulo, nombreAuthor, language, cantidadDescargas);
     }
