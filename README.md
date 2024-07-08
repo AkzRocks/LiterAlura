@@ -37,3 +37,4 @@ Para ejecutar este proyecto, se requieren las siguientes tecnologías y herramie
 
 ![image](https://github.com/AkzRocks/LiterAluraAlexandrina/assets/126634995/2bb884b6-bf53-493b-bc33-80920d783fed)
 
+![badge literalura](https://github.com/AkzRocks/LiterAluraAlexandrina/assets/126634995/463ec6bb-659d-45e8-b414-21ab8b8ab610)
